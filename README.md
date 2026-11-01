@@ -47,6 +47,19 @@ The current implementation operates in a local PostgreSQL development environmen
 
 ## 2. Technology Stack
 
+```mermaid
+flowchart TD
+    A["Python Synthetic Data Generation"] --> B["CSV Datasets"]
+    B --> C["PostgreSQL: raw + reference schemas"]
+    C --> D["dbt Staging Views"]
+    D --> E["dbt Intermediate Views"]
+    E --> F["dbt Mart Tables"]
+    F --> G["AUM | Money Flows | Active Investors | Activation"]
+    H["33 Automated Data Tests"] -.-> D
+    H -.-> E
+    H -.-> F
+```
+
 | Layer | Implementation |
 |---|---|
 | Data generation | Python, pandas, NumPy, Faker |

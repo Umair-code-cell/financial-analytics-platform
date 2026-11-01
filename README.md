@@ -6,6 +6,8 @@ A modular financial analytics platform that transforms simulated wealth-manageme
 
 The solution covers source-data generation, relational ingestion, SQL-based transformation, financial KPI modelling and automated data-quality validation. PostgreSQL provides the analytical storage and execution layer, while dbt manages transformation dependencies, materializations, testing and documentation.
 
+**Metric definitions:** [Financial KPI Definitions](docs/metric_definitions.md)
+
 ## 1. Architecture
 
 ```text

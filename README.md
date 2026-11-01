@@ -188,23 +188,66 @@ The transformation layer implements both generic dbt tests and custom SQL assert
 
 Custom SQL tests identify records violating expected business rules. A test passes when its query returns no violating records.
 
-**Validation baseline:** The full dbt project completed 46 build operations with zero errors on 1 November 2026, before the subsequent risk-segmentation mapping update. The affected customer-model dependency chain was then rebuilt successfully with eight passing operations.
-
 ## 7. Execution
 
 ### Prerequisites
 
-- Python environment with dependencies installed from `requirements.txt`
-- PostgreSQL database accessible to the project user
-- dbt Core with the PostgreSQL adapter
-- Local environment configuration based on `.env.example`
-- dbt connection profile configured for PostgreSQL
+- Python 3.12 and PostgreSQL
+- A PostgreSQL database named `financial_analytics`
+- A database user with permissions to create and populate tables in the `raw`, `reference` and dbt target schemas
+- Python dependencies from `requirements.txt`
+- A local `.env` file based on `.env.example`
+- A dbt PostgreSQL profile configured with the project database credentials
 
-### Transformation Execution
+### Environment Setup
 
-Load the database configuration into the shell environment, then execute from the `dbt/` directory.
+From the repository root:
 
 ```bash
+python -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+cp .env.example .env
+```
+
+Edit `.env` to supply the PostgreSQL connection settings and password. Do not commit this file.
+
+Load the configuration into the shell:
+
+```bash
+set -a
+source .env
+set +a
+```
+
+### Synthetic Data Generation
+
+From the repository root:
+
+```bash
+python -m src.generation.generate_data
+```
+
+This generates synthetic wealth-management datasets under `data/`, including customers, accounts, transactions, portfolio valuations and supporting reference data.
+
+### PostgreSQL Ingestion
+
+With the database running and the necessary schemas and permissions configured, execute from the repository root:
+
+```bash
+python -m src.ingest_data
+```
+
+The ingestion workflow loads the generated CSV files into PostgreSQL.
+
+**Important:** The current ingestion strategy replaces destination tables. Running it against an existing database may overwrite data. Use a dedicated local development database.
+
+### dbt Transformation and Validation
+
+From the repository root, with the environment variables loaded:
+
+```bash
+cd dbt
 dbt debug
 dbt build
 dbt docs generate
@@ -217,9 +260,14 @@ dbt build --select +fct_monthly_money_flows
 dbt test --select fct_monthly_aum
 ```
 
-The `+` selector includes upstream dependencies. Tests are executed as part of `dbt build` where applicable.
+The `+` selector includes upstream dependencies. `dbt build` executes models and applicable tests in dependency order.
 
-Database credentials are supplied through local configuration and are excluded from version control.
+### Validation Baseline
+
+The complete local dbt build passed 46 operations on 1 November 2026: 5 table models, 8 view models and 33 data tests, with zero errors and zero warnings.
+
+Database credentials remain in local configuration and are excluded from version control.
+
 
 ## 8. Engineering Considerations
 

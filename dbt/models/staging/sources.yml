@@ -1,13 +1,39 @@
+
 version: 2
 
 sources:
   - name: raw
     schema: raw
-
     tables:
       - name: customers
         columns:
           - name: customer_id
-            tests:
+            data_tests:
               - not_null
               - unique
+
+      - name: accounts
+        columns:
+          - name: account_id
+            data_tests:
+              - not_null
+              - unique
+          - name: customer_id
+            data_tests:
+              - not_null
+
+      - name: transactions
+        columns:
+          - name: transaction_id
+            data_tests:
+              - not_null
+              - unique
+
+      - name: portfolio_snapshots
+        columns:
+          - name: account_id
+            data_tests:
+              - not_null
+          - name: snapshot_date
+            data_tests:
+              - not_null

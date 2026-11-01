@@ -1,0 +1,30 @@
+
+version: 2
+
+models:
+  - name: fct_monthly_money_flows
+    description: >
+      Monthly completed customer deposits, withdrawals,
+      and net money flows based on transaction timestamps.
+
+    columns:
+      - name: reporting_month
+        description: First calendar day of the reporting month.
+        data_tests:
+          - not_null
+          - unique
+
+      - name: gross_deposits
+        description: Total eligible completed deposit amount.
+        data_tests:
+          - not_null
+
+      - name: gross_withdrawals
+        description: Total eligible completed withdrawal amount.
+        data_tests:
+          - not_null
+
+      - name: net_flows
+        description: Gross deposits minus gross withdrawals.
+        data_tests:
+          - not_null

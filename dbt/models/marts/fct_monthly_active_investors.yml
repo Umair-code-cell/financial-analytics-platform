@@ -1,0 +1,25 @@
+version: 2
+
+models:
+  - name: fct_monthly_active_investors
+    description: >
+      Monthly count of distinct customers with at least
+      one eligible account and positive portfolio valuation.
+
+    columns:
+      - name: reporting_month
+        data_tests:
+          - not_null
+          - unique
+
+      - name: active_investors
+        data_tests:
+          - not_null
+
+      - name: active_investment_accounts
+        data_tests:
+          - not_null
+
+      - name: active_account_aum
+        data_tests:
+          - not_null

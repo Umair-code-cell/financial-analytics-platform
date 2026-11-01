@@ -1,0 +1,25 @@
+version: 2
+
+models:
+  - name: fct_monthly_customer_activation
+    description: >
+      Monthly registration cohorts and first successful
+      deposit activation within 30 days.
+
+    columns:
+      - name: registration_month
+        data_tests:
+          - not_null
+          - unique
+
+      - name: registered_customers
+        data_tests:
+          - not_null
+
+      - name: eligible_customers_30d
+        data_tests:
+          - not_null
+
+      - name: activated_customers_30d
+        data_tests:
+          - not_null

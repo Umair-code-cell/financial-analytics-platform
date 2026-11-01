@@ -1,6 +1,8 @@
-pandas==3.0.5
-numpy==2.5.1
+pandas
+numpy
 faker
-psycopg
+sqlalchemy
+python-dotenv
+psycopg2-binary
 dbt-core==1.12.2
 dbt-postgres==1.11.0

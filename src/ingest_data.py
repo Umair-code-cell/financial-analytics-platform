@@ -1,7 +1,7 @@
 from pathlib import Path
 
 import pandas as pd
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, text
 from dotenv import load_dotenv
 import os
 
@@ -75,6 +75,12 @@ def load_table(
 def main() -> None:
     print("Financial Analytics PostgreSQL Ingestion")
     print("---------------------------------------")
+
+    with engine.begin() as conn:
+        conn.execute(text("CREATE SCHEMA IF NOT EXISTS raw"))
+        conn.execute(text("CREATE SCHEMA IF NOT EXISTS reference"))
+
+    print("PostgreSQL source schemas verified.")
 
     for schema, tables in TABLES.items():
         for table_name, file_path in tables.items():

@@ -219,6 +219,26 @@ set -a
 source .env
 set +a
 ```
+### dbt Profile Setup
+
+dbt uses a connection profile to access PostgreSQL. A reusable
+profile template is provided in `dbt/profiles.yml.example`.
+
+For a new installation, create the dbt configuration directory:
+
+```bash
+mkdir -p ~/.dbt
+```
+
+Then copy the supplied profile:
+
+```bash
+cp dbt/profiles.yml.example ~/.dbt/profiles.yml
+```
+
+The profile reads database credentials from environment variables.
+If an existing `~/.dbt/profiles.yml` is present, review it before
+replacing it.
 
 ### Synthetic Data Generation
 
